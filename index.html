@@ -381,59 +381,135 @@ class="post-8 page type-page status-publish ast-article-single" id="post-8" item
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Feliks.id",
-  "image": "http://localhost/fel/wp-content/uploads/2026/02/llogo-06.png",
-  "@id": "https://feliks.id",
-  "url": "https://feliks.id",
-  "telephone": "+6282194791885",
-  "description": "Feliks.id adalah logo desainer profesional di Palu, Sulawesi Tengah. Menyediakan Jasa desain logo Simple, modern, dan bold, sesuai kebutuhan bisnis Anda.",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Jl. Merpati",
-    "addressLocality": "Palu",
-    "addressRegion": "Sulawesi Tengah",
-    "postalCode": "94231",
-    "addressCountry": "ID"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": -0.906679,
-    "longitude": 119.870510
-  },
-  "openingHoursSpecification": [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    }
-  ],
-  "sameAs": [
-    "https://www.instagram.com/feliks.id",
-    "https://www.linkedin.com/in/felix-hendra-070275274/"
-  ],
-  "priceRange": "$$$",
-  "review": [
-    {
-      "@type": "Review",
-      "author": "Zaenal Anwar A.",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5",
-        "bestRating": "5"
+      "@type": ["ProfessionalService", "DesignAgency"],
+      "@id": "https://feliks.id/#business",
+      "name": "Feliks.id",
+      "url": "https://feliks.id/",
+      "image": "https://feliks.id/wp-content/uploads/2026/02/llogo-06.png",
+      "logo": "https://feliks.id/wp-content/uploads/2026/02/llogo-06.png",
+      "description": "Feliks.id adalah jasa desain logo profesional berbasis di Palu, Sulawesi Tengah, melayani UMKM dan bisnis modern dengan gaya simple, bold, dan strategis.",
+      "telephone": "+6282194791885",
+      "priceRange": "$$",
+      "founder": {
+        "@type": "Person",
+        "name": "Felix Hendra"
       },
-      "reviewBody": "Rekomendasi jasa pembuatan logo Kota Palu, terpercaya, fast respon, dan hasil memuaskan"
+      "knowsAbout": [
+        "Logo Design",
+        "Brand Identity",
+        "Visual Branding",
+        "Modern Logo Design",
+        "Business Branding",
+        "Logo UMKM",
+        "Creative Direction"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jl. Merpati",
+        "addressLocality": "Palu",
+        "addressRegion": "Sulawesi Tengah",
+        "postalCode": "94231",
+        "addressCountry": "ID"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -0.906679,
+        "longitude": 119.870510
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "17:00"
+        }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/feliks.id",
+        "https://www.behance.net/felixhendra",
+        "https://www.linkedin.com/in/felix-hendra-070275274/"
+      ],
+      "areaServed": [
+        { "@type": "City", "name": "Palu" },
+        { "@type": "AdministrativeArea", "name": "Donggala" },
+        { "@type": "AdministrativeArea", "name": "Parigi Moutong" },
+        { "@type": "AdministrativeArea", "name": "Poso" },
+        { "@type": "AdministrativeArea", "name": "Banggai" },
+        { "@type": "AdministrativeArea", "name": "Morowali" },
+        { "@type": "AdministrativeArea", "name": "Buol" },
+        { "@type": "State", "name": "Sulawesi Tengah" },
+        { "@type": "State", "name": "Gorontalo" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Layanan Feliks.id",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Jasa Desain Logo" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brand Identity Design" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Visual Branding" } }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "7"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Zaenal Anwar A." },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Rekomendasi jasa pembuatan logo Kota Palu, terpercaya, fast respon, dan hasil memuaskan."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Oys Meilan Shinta" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Buat logo cepat, revisi dilayani dengan baik, hasilnya memuaskan."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Defrie Sandag" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Recommended logo design in Palu."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Faiz Arkan Mallappa" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Sangat profesional, detail, dan sesuai kemauan pelanggan. Pengerjaan tepat waktu."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Nuralfi Syh" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Desain logonya bagus, cepat respon, dan owner-nya ramah."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Yehezkiel Salea" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Desain oke, hasil memuaskan, recommended."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Kevin Alexander" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Well delivered according to my brief."
+        }
+      ]
     },
     {
-      "@type": "Review",
-      "author": "Oys Meilan Shinta",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5",
-        "bestRating": "5"
-      },
-      "reviewBody": "Buat Logo cepat.. beberapa kalo revisi ttp diladeni dg baik sekali… pokoknya terbaik… yang mau buat logo kesini sj… pokoknya bintang 10."
+      "@type": "WebSite",
+      "@id": "https://feliks.id/#website",
+      "url": "https://feliks.id/",
+      "name": "Feliks.id",
+      "publisher": { "@id": "https://feliks.id/#business" },
+      "inLanguage": "id-ID"
     }
   ]
 }
