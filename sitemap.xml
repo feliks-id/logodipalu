@@ -7,13 +7,19 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://feliks.id/jasa-desain-logo-kendari/</loc>
-  <lastmod>2026-07-13</lastmod>
-  <priority>0.90</priority>
-</url>
-<url>
   <loc>https://feliks.id/work-gallery/</loc>
   <lastmod>2026-07-13</lastmod>
   <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://feliks.id/desain-logo/jasa-desain-logo-kendari/</loc>
+  <lastmod>2026-07-13</lastmod>
+  <priority>0.90</priority>
+</url>
+<url>
+  <loc>https://feliks.id/desain-logo/jasa-desain-logo-gorontalo/</loc>
+  <lastmod>2026-07-13</lastmod>
+  <priority>0.90</priority>
+</url>
+
 </urlset>
