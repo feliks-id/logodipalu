@@ -5522,356 +5522,422 @@
                   data-ast-blocks-layout="true"
                   itemprop="text"
                 >
+                  <style>
+                    /* Hero jasa desain logo Kendari — gambar jadi latar penuh, menyatu dengan header */
+                    .jdl-hero {
+                      position: relative;
+                      isolation: isolate;
+                      overflow: hidden;
+                      display: flex;
+                      align-items: flex-end;
+                      min-height: 820px;
+                    }
+                    .jdl-hero__bg {
+                      position: absolute;
+                      inset: 0;
+                      width: 100%;
+                      height: 85%;
+                      object-fit: cover;
+                      object-position: center 15%;
+                      z-index: 0;
+                    }
+                    .jdl-hero__scrim {
+                      position: absolute;
+                      inset: 0;
+                      z-index: 1;
+                      background:
+                        linear-gradient(
+                          100deg,
+                          rgba(5, 5, 5, 0.96) 0%,
+                          rgba(5, 5, 5, 0.88) 38%,
+                          rgba(5, 5, 5, 0.45) 66%,
+                          rgba(5, 5, 5, 0.08) 100%
+                        ),
+                        linear-gradient(
+                          0deg,
+                          rgba(5, 5, 5, 0.92) 0%,
+                          rgba(5, 5, 5, 0) 45%
+                        ),
+                        linear-gradient(
+                          180deg,
+                          rgba(5, 5, 5, 0.65) 0%,
+                          rgba(5, 5, 5, 0) 14%
+                        );
+                    }
+                    .jdl-hero__content {
+                      position: relative;
+                      z-index: 2;
+                      width: 100%;
+                      max-width: 1800px;
+                      margin: 80px;
+                      padding: 0px 100px 60px;
+                    }
+                    .jdl-hero__stats {
+                      background: rgba(5, 5, 5, 0.137);
+                      -webkit-backdrop-filter: blur(4px);
+                      backdrop-filter: blur(6px);
+                      border-radius: 24px 24px 0 0;
+                      padding-left: 24px !important;
+                      padding-right: 24px !important;
+                    }
+
+                    /* Header melayang transparan di atas hero */
+                    #masthead {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      z-index: 30;
+                      background: none;
+                    }
+                    .ast-primary-header-bar {
+                      background-color: transparent !important;
+                      background-image: none !important;
+                    }
+
+                    @media (max-width: 921px) {
+                      .jdl-hero {
+                        min-height: 680px;
+                        align-items: center;
+                      }
+                      .jdl-hero__content {
+                        padding: 140px 40px 50px;
+                      }
+                      .jdl-hero__title {
+                        font-size: 52px !important;
+                      }
+                    }
+                    @media (max-width: 544px) {
+                      .jdl-hero {
+                        min-height: 640px;
+                      }
+                      .jdl-hero__content {
+                        padding: 110px 20px 40px;
+                      }
+                      .jdl-hero__title {
+                        font-size: 40px !important;
+                      }
+                      .jdl-hero__desc {
+                        font-size: 17px !important;
+                      }
+                    }
+                  </style>
+
                   <div
-                    class="wp-block-group alignfull has-background is-layout-constrained wp-container-core-group-is-layout-11d65673 wp-block-group-is-layout-constrained"
+                    class="wp-block-group alignfull jdl-hero"
                     style="
                       background-color: #050505;
                       margin-top: 0;
                       margin-bottom: 0;
-                      padding-top: 20px;
-                      padding-right: 100px;
-                      padding-bottom: 100px;
-                      padding-left: 100px;
                     "
                   >
-                    <div
-                      class="wp-block-columns alignwide are-vertically-aligned-center is-layout-flex wp-container-core-columns-is-layout-ec2e7a44 wp-block-columns-is-layout-flex"
-                      style="padding-top: 0; padding-bottom: 0"
-                    >
-                      <div
-                        class="wp-block-column is-vertically-aligned-center is-layout-flow wp-container-core-column-is-layout-1a3d6b99 wp-block-column-is-layout-flow"
+                    <img
+                      class="jdl-hero__bg"
+                      src="../image/2022/03/ChatGPT Image Aug 29, 2026, 04_30_00 PM.png"
+                      alt="Desain logo Kendari profesional untuk bisnis dan perusahaan di Kota Kendari"
+                      width="4501"
+                      height="6001"
+                      decoding="async"
+                      fetchpriority="high"
+                    />
+                    <div class="jdl-hero__scrim" aria-hidden="true"></div>
+
+                    <div class="jdl-hero__content">
+                      <p
+                        class="has-facc-15-color has-text-color has-link-color wp-elements-d4b06e421a92886df0585b79daa0cbbc"
                         style="
-                          padding-top: 0;
-                          padding-bottom: 0;
-                          flex-basis: 55%;
+                          font-size: 14px;
+                          font-weight: 700;
+                          letter-spacing: 2px;
                         "
                       >
-                        <p
-                          class="has-facc-15-color has-text-color has-link-color wp-elements-d4b06e421a92886df0585b79daa0cbbc"
-                          style="
-                            font-size: 14px;
-                            font-weight: 700;
-                            letter-spacing: 2px;
-                          "
-                        >
-                          JASA DESAIN LOGO
-                        </p>
+                        JASA DESAIN LOGO
+                      </p>
 
-                        <h1
-                          class="wp-block-heading has-white-color has-text-color has-link-color wp-elements-b6a9152cc46e21c0655f0cece078c6c6"
-                          style="
-                            font-size: 86px;
-                            font-weight: 800;
-                            line-height: 0.95;
-                          "
-                        >
-                          Jasa Desain Logo
-                          <span style="color: #facc15">Kendari</span>
-                        </h1>
+                      <h1
+                        class="wp-block-heading has-white-color has-text-color has-link-color wp-elements-b6a9152cc46e21c0655f0cece078c6c6 jdl-hero__title"
+                        style="
+                          font-size: 86px;
+                          font-weight: 800;
+                          line-height: 0.95;
+                        "
+                      >
+                        Jasa Desain Logo
+                        <span style="color: #facc15">Kendari</span>
+                      </h1>
 
-                        <p
-                          class="has-white-color has-text-color has-link-color wp-elements-d4b06e421a92886df0585b79daa0cbbc"
-                          style="
-                            font-size: 14px;
-                            font-weight: normal;
-                            letter-spacing: 2px;
-                          "
-                        >
-                          Bangun Brand yang Lebih Profesional dengan Logo
-                          Original untuk Bisnis di Kendari
-                        </p>
+                      <p
+                        class="has-white-color has-text-color has-link-color wp-elements-d4b06e421a92886df0585b79daa0cbbc"
+                        style="
+                          font-size: 14px;
+                          font-weight: normal;
+                          letter-spacing: 2px;
+                        "
+                      >
+                        Bangun Brand yang Lebih Profesional dengan Logo Original
+                        untuk Bisnis di Kendari
+                      </p>
 
-                        <p
-                          class="has-b-5-b-5-b-5-color has-text-color has-link-color wp-elements-6897a76fe475b4386bc422581ce89f2a"
-                          style="
-                            margin-top: 30px;
-                            margin-bottom: 40px;
-                            font-size: 22px;
-                            line-height: 1.5;
-                          "
-                        >
-                          menyediakan jasa desain logo Kendari bagi UMKM,
-                          perusahaan, startup, toko, restoran, coffee shop,
-                          kontraktor, hingga bisnis jasa yang ingin memiliki
-                          identitas visual profesional. Setiap logo dirancang
-                          secara original berdasarkan karakter bisnis Anda,
-                          bukan menggunakan template, sehingga lebih mudah
-                          dikenali, dipercaya pelanggan, dan siap bersaing di
-                          era digital
-                        </p>
+                      <p
+                        class="has-b-5-b-5-b-5-color has-text-color has-link-color wp-elements-6897a76fe475b4386bc422581ce89f2a jdl-hero__desc"
+                        style="
+                          margin-top: 30px;
+                          margin-bottom: 40px;
+                          font-size: 22px;
+                          line-height: 1.5;
+                          max-width: 640px;
+                        "
+                      >
+                        menyediakan jasa desain logo Kendari bagi UMKM,
+                        perusahaan, startup, toko, restoran, coffee shop,
+                        kontraktor, hingga bisnis jasa yang ingin memiliki
+                        identitas visual profesional. Setiap logo dirancang
+                        secara original berdasarkan karakter bisnis Anda, bukan
+                        menggunakan template, sehingga lebih mudah dikenali,
+                        dipercaya pelanggan, dan siap bersaing di era digital
+                      </p>
 
-                        <div
-                          class="wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex"
-                        >
-                          <div class="wp-block-button">
-                            <a
-                              class="wp-block-button__link wp-element-button"
-                              href="http://wa.me/62082194791885"
-                              style="
-                                border-radius: 100px;
-                                padding-top: 18px;
-                                padding-right: 30px;
-                                padding-bottom: 18px;
-                                padding-left: 30px;
-                              "
-                              target="_blank"
-                              rel="noreferrer noopener"
-                            >
-                              Konsultasi Logo Sekarang
-                            </a>
-                          </div>
-
-                          <div
-                            class="wp-block-button is-style-outline is-style-outline--1"
+                      <div
+                        class="wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex"
+                      >
+                        <div class="wp-block-button">
+                          <a
+                            class="wp-block-button__link wp-element-button"
+                            href="http://wa.me/62082194791885"
+                            style="
+                              border-radius: 100px;
+                              padding-top: 18px;
+                              padding-right: 30px;
+                              padding-bottom: 18px;
+                              padding-left: 30px;
+                            "
+                            target="_blank"
+                            rel="noreferrer noopener"
                           >
-                            <a
-                              class="wp-block-button__link has-border-color has-ast-global-color-3-border-color wp-element-button"
-                              href="https://www.instagram.com/feliks.id"
-                              style="
-                                border-width: 1px;
-                                border-radius: 100px;
-                                padding-top: 18px;
-                                padding-right: 30px;
-                                padding-bottom: 18px;
-                                padding-left: 30px;
-                              "
-                              target="_blank"
-                              rel="noreferrer noopener"
-                              >Lihat Instagram
-                            </a>
-                          </div>
+                            Konsultasi Logo Sekarang
+                          </a>
                         </div>
 
                         <div
-                          style="height: 10px"
-                          aria-hidden="true"
-                          class="wp-block-spacer"
-                        ></div>
-
-                        <div
-                          class="wp-block-columns are-vertically-aligned-bottom is-not-stacked-on-mobile is-layout-flex wp-container-core-columns-is-layout-71906bf5 wp-block-columns-is-layout-flex"
-                          style="
-                            border-top-left-radius: 24px;
-                            border-top-right-radius: 24px;
-                            border-bottom-left-radius: 0px;
-                            border-bottom-right-radius: 0px;
-                            margin-top: 0;
-                            margin-bottom: 0;
-                            padding-top: var(--wp--preset--spacing--60);
-                            padding-right: 0;
-                            padding-bottom: var(--wp--preset--spacing--60);
-                            padding-left: 0;
-                          "
+                          class="wp-block-button is-style-outline is-style-outline--1"
                         >
-                          <div
-                            class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
+                          <a
+                            class="wp-block-button__link has-border-color has-ast-global-color-3-border-color wp-element-button"
+                            href="https://www.instagram.com/feliks.id"
                             style="
-                              padding-top: 0;
-                              padding-right: 0;
-                              padding-bottom: 0;
-                              padding-left: 0;
-                              flex-basis: 33.33%;
+                              border-width: 1px;
+                              border-radius: 100px;
+                              padding-top: 18px;
+                              padding-right: 30px;
+                              padding-bottom: 18px;
+                              padding-left: 30px;
                             "
-                          >
-                            <div
-                              class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-1146dd41 wp-block-columns-is-layout-flex"
-                              style="padding-right: 0; padding-left: 0"
-                            >
-                              <div
-                                class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                                style="flex-basis: 20%"
-                              >
-                                <figure
-                                  class="wp-block-image aligncenter size-full is-resized"
-                                >
-                                  <img
-                                    decoding="async"
-                                    width="625"
-                                    height="625"
-                                    src="../image/2026/05/drer-01-01.png"
-                                    alt=""
-                                    class="wp-image-1043"
-                                    style="
-                                      object-fit: cover;
-                                      width: 63px;
-                                      height: auto;
-                                    "
-                                  />
-                                </figure>
-                              </div>
-
-                              <div
-                                class="wp-block-column is-layout-flow wp-container-core-column-is-layout-470e7e12 wp-block-column-is-layout-flow"
-                                style="
-                                  padding-top: 0;
-                                  padding-right: 0;
-                                  padding-bottom: 0;
-                                  padding-left: 0;
-                                  flex-basis: 66.66%;
-                                "
-                              >
-                                <p
-                                  class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-ee6d23d8fe53959a515ef8507a9d785b"
-                                  style="
-                                    margin-top: 0;
-                                    margin-bottom: 0;
-                                    padding-top: 0;
-                                    padding-right: 0;
-                                    padding-bottom: 0;
-                                    padding-left: 0;
-                                  "
-                                >
-                                  5+ Year
-                                </p>
-
-                                <p
-                                  class="has-link-color wp-elements-26b63963a1d58172f043f4551c79b4f4"
-                                  style="
-                                    margin-top: 0;
-                                    margin-bottom: 0;
-                                    padding-top: 0;
-                                    padding-right: 0;
-                                    padding-bottom: 0;
-                                    padding-left: 0;
-                                  "
-                                >
-                                  Experience
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
-                            style="flex-basis: 33.33%"
-                          >
-                            <div
-                              class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-a85f4655 wp-block-columns-is-layout-flex"
-                            >
-                              <div
-                                class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                                style="
-                                  padding-right: 0;
-                                  padding-left: 0;
-                                  flex-basis: 20%;
-                                "
-                              >
-                                <figure
-                                  class="wp-block-image aligncenter size-full is-resized"
-                                >
-                                  <img
-                                    decoding="async"
-                                    width="626"
-                                    height="626"
-                                    src="../image/2026/05/logo_1efff3c8c5-04-1.png"
-                                    alt=""
-                                    class="wp-image-781"
-                                    style="
-                                      object-fit: cover;
-                                      width: 63px;
-                                      height: auto;
-                                    "
-                                  />
-                                </figure>
-                              </div>
-
-                              <div
-                                class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                                style="flex-basis: 66.66%"
-                              >
-                                <p
-                                  class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-2c6cf59a1386e2181cb632baf99dc11a"
-                                  style="margin-top: 0; margin-bottom: 0"
-                                >
-                                  File Lengkap
-                                </p>
-
-                                <p
-                                  class="has-link-color wp-elements-ec26296259e0a249b8d269b8937925bb"
-                                  style="margin-top: 0; margin-bottom: 0"
-                                >
-                                  Siap Pakai
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
-                            style="flex-basis: 33.33%"
-                          >
-                            <div
-                              class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-7c4d744e wp-block-columns-is-layout-flex"
-                              style="padding-right: 0; padding-left: 0"
-                            >
-                              <div
-                                class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                                style="flex-basis: 20%"
-                              >
-                                <figure
-                                  class="wp-block-image aligncenter size-full is-resized"
-                                >
-                                  <img
-                                    decoding="async"
-                                    width="626"
-                                    height="625"
-                                    src="../image/2026/05/logo_1efff3cs8c5-02.png"
-                                    alt=""
-                                    class="wp-image-1204"
-                                    style="
-                                      object-fit: cover;
-                                      width: 63px;
-                                      height: auto;
-                                    "
-                                  />
-                                </figure>
-                              </div>
-
-                              <div
-                                class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                                style="flex-basis: 66.66%"
-                              >
-                                <p
-                                  class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-cc50e17cb8a5c900d1946b2f0d7f833a"
-                                  style="margin-top: 0; margin-bottom: 0"
-                                >
-                                  Seluruh Indonesia
-                                </p>
-
-                                <p
-                                  class="has-link-color wp-elements-f445504aec5d583750c5a6e50abcda10"
-                                  style="margin-top: 0; margin-bottom: 0"
-                                >
-                                  Online Service
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            >Lihat Instagram
+                          </a>
                         </div>
                       </div>
 
                       <div
-                        class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                        style="flex-basis: 45%"
+                        style="height: 50px"
+                        aria-hidden="true"
+                        class="wp-block-spacer"
+                      ></div>
+
+                      <div
+                        class="wp-block-columns are-vertically-aligned-bottom is-not-stacked-on-mobile is-layout-flex wp-container-core-columns-is-layout-71906bf5 wp-block-columns-is-layout-flex jdl-hero__stats"
+                        style="
+                          border-top-left-radius: 24px;
+                          border-top-right-radius: 24px;
+                          border-bottom-left-radius: 24px;
+                          border-bottom-right-radius: 24px;
+                          margin-top: 0;
+                          margin-bottom: 0;
+                          padding-top: var(--wp--preset--spacing--50);
+                          padding-right: 0;
+                          padding-bottom: var(--wp--preset--spacing--50);
+                          padding-left: 0;
+                        "
                       >
-                        <figure
-                          class="wp-block-image size-full has-custom-border"
+                        <div
+                          class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
+                          style="
+                            padding-top: 0;
+                            padding-right: 0;
+                            padding-bottom: 0;
+                            padding-left: 0;
+                            flex-basis: 33.33%;
+                          "
                         >
-                          <img
-                            loading="lazy"
-                            decoding="async"
-                            width="4501"
-                            height="6001"
-                            src="../image/2022/03/jasa desain logo di kota kendari.png"
-                            alt="Desain logo Kendari profesional untuk bisnis dan perusahaan di Kota Kendari"
-                            class="wp-image-74"
-                            style="
-                              border-radius: 24px;
-                              aspect-ratio: 5/6;
-                              object-fit: cover;
-                            "
-                          />
-                        </figure>
+                          <div
+                            class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-1146dd41 wp-block-columns-is-layout-flex"
+                            style="padding-right: 0; padding-left: 0"
+                          >
+                            <div
+                              class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
+                              style="flex-basis: 20%"
+                            >
+                              <figure
+                                class="wp-block-image aligncenter size-full is-resized"
+                              >
+                                <img
+                                  decoding="async"
+                                  width="625"
+                                  height="625"
+                                  src="../image/2026/05/drer-01-01.png"
+                                  alt=""
+                                  class="wp-image-1043"
+                                  style="
+                                    object-fit: cover;
+                                    width: 63px;
+                                    height: auto;
+                                  "
+                                />
+                              </figure>
+                            </div>
+                            <div
+                              class="wp-block-column is-layout-flow wp-container-core-column-is-layout-470e7e12 wp-block-column-is-layout-flow"
+                              style="
+                                padding-top: 0;
+                                padding-right: 0;
+                                padding-bottom: 0;
+                                padding-left: 0;
+                                flex-basis: 66.66%;
+                              "
+                            >
+                              <p
+                                class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-ee6d23d8fe53959a515ef8507a9d785b"
+                                style="
+                                  margin-top: 0;
+                                  margin-bottom: 0;
+                                  padding-top: 0;
+                                  padding-right: 0;
+                                  padding-bottom: 0;
+                                  padding-left: 0;
+                                "
+                              >
+                                5+ Year
+                              </p>
+                              <p
+                                class="has-link-color wp-elements-26b63963a1d58172f043f4551c79b4f4"
+                                style="
+                                  margin-top: 0;
+                                  margin-bottom: 0;
+                                  padding-top: 0;
+                                  padding-right: 0;
+                                  padding-bottom: 0;
+                                  padding-left: 0;
+                                "
+                              >
+                                Experience
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
+                          style="flex-basis: 33.33%"
+                        >
+                          <div
+                            class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-a85f4655 wp-block-columns-is-layout-flex"
+                          >
+                            <div
+                              class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
+                              style="
+                                padding-right: 0;
+                                padding-left: 0;
+                                flex-basis: 20%;
+                              "
+                            >
+                              <figure
+                                class="wp-block-image aligncenter size-full is-resized"
+                              >
+                                <img
+                                  decoding="async"
+                                  width="626"
+                                  height="626"
+                                  src="../image/2026/05/logo_1efff3c8c5-04-1.png"
+                                  alt=""
+                                  class="wp-image-781"
+                                  style="
+                                    object-fit: cover;
+                                    width: 63px;
+                                    height: auto;
+                                  "
+                                />
+                              </figure>
+                            </div>
+                            <div
+                              class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
+                              style="flex-basis: 66.66%"
+                            >
+                              <p
+                                class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-2c6cf59a1386e2181cb632baf99dc11a"
+                                style="margin-top: 0; margin-bottom: 0"
+                              >
+                                File Lengkap
+                              </p>
+                              <p
+                                class="has-link-color wp-elements-ec26296259e0a249b8d269b8937925bb"
+                                style="margin-top: 0; margin-bottom: 0"
+                              >
+                                Siap Pakai
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          class="wp-block-column is-vertically-aligned-bottom is-layout-flow wp-block-column-is-layout-flow"
+                          style="flex-basis: 33.33%"
+                        >
+                          <div
+                            class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-7c4d744e wp-block-columns-is-layout-flex"
+                            style="padding-right: 0; padding-left: 0"
+                          >
+                            <div
+                              class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
+                              style="flex-basis: 20%"
+                            >
+                              <figure
+                                class="wp-block-image aligncenter size-full is-resized"
+                              >
+                                <img
+                                  decoding="async"
+                                  width="626"
+                                  height="625"
+                                  src="../image/2026/05/logo_1efff3cs8c5-02.png"
+                                  alt=""
+                                  class="wp-image-1204"
+                                  style="
+                                    object-fit: cover;
+                                    width: 63px;
+                                    height: auto;
+                                  "
+                                />
+                              </figure>
+                            </div>
+                            <div
+                              class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
+                              style="flex-basis: 66.66%"
+                            >
+                              <p
+                                class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-cc50e17cb8a5c900d1946b2f0d7f833a"
+                                style="margin-top: 0; margin-bottom: 0"
+                              >
+                                Seluruh Indonesia
+                              </p>
+                              <p
+                                class="has-link-color wp-elements-f445504aec5d583750c5a6e50abcda10"
+                                style="margin-top: 0; margin-bottom: 0"
+                              >
+                                Online Service
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -6040,195 +6106,6 @@
                       ]
                     }
                   </script>
-
-                  <div
-                    class="wp-block-columns alignfull has-background is-layout-flex wp-container-core-columns-is-layout-402b6bc0 wp-block-columns-is-layout-flex"
-                    style="
-                      background-color: #1a1a1a;
-                      padding-top: var(--wp--preset--spacing--50);
-                      padding-right: var(--wp--preset--spacing--80);
-                      padding-bottom: var(--wp--preset--spacing--50);
-                      padding-left: var(--wp--preset--spacing--80);
-                    "
-                  >
-                    <div
-                      class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                      style="flex-basis: 20%"
-                    ></div>
-
-                    <div
-                      class="wp-block-column is-vertically-aligned-top is-layout-constrained wp-container-core-column-is-layout-4d6807f6 wp-block-column-is-layout-constrained"
-                      style="
-                        padding-top: 0;
-                        padding-right: 0;
-                        padding-bottom: 0;
-                        padding-left: 0;
-                        flex-basis: 1000px;
-                      "
-                    >
-                      <div
-                        class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-1146dd41 wp-block-columns-is-layout-flex"
-                        style="padding-right: 0; padding-left: 0"
-                      >
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="flex-basis: 20%"
-                        >
-                          <figure
-                            class="wp-block-image aligncenter size-full is-resized"
-                          >
-                            <img
-                              loading="lazy"
-                              decoding="async"
-                              width="626"
-                              height="626"
-                              src="../image/2026/05/logo_1efff3c8c5-03-1.png"
-                              alt=""
-                              class="wp-image-780"
-                              style="
-                                object-fit: cover;
-                                width: 63px;
-                                height: auto;
-                              "
-                            />
-                          </figure>
-                        </div>
-
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="flex-basis: 66.66%"
-                        >
-                          <p
-                            class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-56597974123aa126a0b6040fd7527e59"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            100% Costume Design
-                          </p>
-
-                          <p
-                            class="has-link-color wp-elements-477d82203c376a2597db74ad1491f59e"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            Design Original dibuat Khusus untuk Brand anda
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      class="wp-block-column is-vertically-aligned-top is-layout-constrained wp-container-core-column-is-layout-1629ea14 wp-block-column-is-layout-constrained"
-                      style="flex-basis: 1000px"
-                    >
-                      <div
-                        class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-a85f4655 wp-block-columns-is-layout-flex"
-                      >
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="
-                            padding-right: 0;
-                            padding-left: 0;
-                            flex-basis: 20%;
-                          "
-                        >
-                          <figure
-                            class="wp-block-image aligncenter size-full is-resized"
-                          >
-                            <img
-                              loading="lazy"
-                              decoding="async"
-                              width="625"
-                              height="625"
-                              src="../image/2026/05/logo_1efff3cs8c5-01.png"
-                              alt=""
-                              class="wp-image-1203"
-                              style="
-                                object-fit: cover;
-                                width: 63px;
-                                height: auto;
-                              "
-                            />
-                          </figure>
-                        </div>
-
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="flex-basis: 66.66%"
-                        >
-                          <p
-                            class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-95aa270cbf1fd66be75491052130ebde"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            Fast Response
-                          </p>
-
-                          <p
-                            class="has-link-color wp-elements-a34acfa966472de51bc7fda46b27be52"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            Komunikasi Cepat Jelas dan Mudah via WhatsApp
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      class="wp-block-column is-vertically-aligned-top is-layout-constrained wp-container-core-column-is-layout-1629ea14 wp-block-column-is-layout-constrained"
-                      style="flex-basis: 1000px"
-                    >
-                      <div
-                        class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-7c4d744e wp-block-columns-is-layout-flex"
-                        style="padding-right: 0; padding-left: 0"
-                      >
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="flex-basis: 20%"
-                        >
-                          <figure
-                            class="wp-block-image aligncenter size-full is-resized"
-                          >
-                            <img
-                              loading="lazy"
-                              decoding="async"
-                              width="626"
-                              height="626"
-                              src="../image/2026/05/logo_1efff3c8c5-02-1.png"
-                              alt=""
-                              class="wp-image-779"
-                              style="
-                                object-fit: cover;
-                                width: 63px;
-                                height: auto;
-                              "
-                            />
-                          </figure>
-                        </div>
-
-                        <div
-                          class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                          style="flex-basis: 66.66%"
-                        >
-                          <p
-                            class="has-ast-global-color-5-color has-text-color has-link-color wp-elements-9503e6b86246f4fb065950f6bfa2e0c0"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            Revisi Sampai Sesuai
-                          </p>
-
-                          <p
-                            class="has-link-color wp-elements-2c75c36b9f802892852043b1afe47dd3"
-                            style="margin-top: 0; margin-bottom: 0"
-                          >
-                            Kepuasan Anda adalah Prioritas
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      class="wp-block-column is-layout-flow wp-block-column-is-layout-flow"
-                      style="flex-basis: 20%"
-                    ></div>
-                  </div>
 
                   <div
                     class="wp-block-group alignfull has-background is-layout-constrained wp-container-core-group-is-layout-22ee8e7f wp-block-group-is-layout-constrained"
