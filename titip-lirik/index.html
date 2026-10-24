@@ -13,6 +13,9 @@
         --accent: #5557c8;
         --line: #e1e5ef;
       }
+      [hidden] {
+        display: none !important;
+      }
       * {
         box-sizing: border-box;
       }
@@ -56,6 +59,18 @@
         padding: 20px;
         box-shadow: 0 5px 18px #1720330a;
       }
+      .auth-box {
+        max-width: 420px;
+        margin: 0 auto;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
       h2 {
         font-size: 18px;
         margin: 0 0 16px;
@@ -94,6 +109,10 @@
         cursor: pointer;
         background: var(--accent);
         color: white;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
       }
       button.secondary {
         background: #eef0f8;
@@ -218,25 +237,8 @@
         }
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
-
-  <!-- Koneksi Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    // Ganti dua nilai di bawah dengan informasi dari proyek Supabase kamu.
-    const SUPABASE_URL = "https://xdhqejhwwlvlwtclrrkq.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_P0EPIlTluFnVotiOQQNYaA_CnZvSj3z";
-
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY,
-    );
-
-    console.log("Klien Supabase berhasil disiapkan.");
-  </script>
-
   <body>
     <header>
       <div class="wrap">
@@ -247,26 +249,58 @@
         </p>
       </div>
     </header>
+
     <main>
-      <div class="layout">
-        <section class="panel">
-          <h2>✍️ Editor Lirik</h2>
-          <label for="songTitle">Judul lagu</label>
-          <input
-            id="songTitle"
-            type="text"
-            placeholder="Contoh: Satu Hal Kuminta"
-          />
-          <label for="artist">Penyanyi / pencipta (opsional)</label>
-          <input
-            id="artist"
-            type="text"
-            placeholder="Nama penyanyi atau pencipta"
-          />
-          <label for="lyrics">Lirik lagu</label>
-          <textarea
-            id="lyrics"
-            placeholder="Tulis lirik lagu di sini...
+      <!-- Panel login -->
+      <section class="panel auth-box" id="authPanel">
+        <h2>🔐 Masuk ke Akun</h2>
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          placeholder="nama@email.com"
+        />
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Minimal 6 karakter"
+        />
+        <div class="buttons">
+          <button id="loginBtn">Masuk</button>
+          <button id="signupBtn" class="secondary">Daftar</button>
+        </div>
+        <p class="status" id="authStatus" aria-live="polite"></p>
+      </section>
+
+      <!-- Area aplikasi, tampil setelah login -->
+      <div id="appArea" hidden>
+        <div class="topbar">
+          <span class="hint" id="userEmail"></span>
+          <button id="logoutBtn" class="secondary small">Keluar</button>
+        </div>
+
+        <div class="layout">
+          <section class="panel">
+            <h2>✍️ Editor Lirik</h2>
+            <label for="songTitle">Judul lagu</label>
+            <input
+              id="songTitle"
+              type="text"
+              placeholder="Contoh: Satu Hal Kuminta"
+            />
+            <label for="artist">Penyanyi / pencipta (opsional)</label>
+            <input
+              id="artist"
+              type="text"
+              placeholder="Nama penyanyi atau pencipta"
+            />
+            <label for="lyrics">Lirik lagu</label>
+            <textarea
+              id="lyrics"
+              placeholder="Tulis lirik lagu di sini...
 
 [Verse 1]
 ...
@@ -276,53 +310,67 @@
 
 [Verse 2]
 ..."
-          ></textarea>
-          <p class="hint">
-            Baris baru dan penanda seperti [Verse], [Chorus], dan [Bridge] akan
-            dipertahankan.
-          </p>
-          <div class="buttons">
-            <button id="save">Simpan Lagu</button>
-            <button id="new" class="secondary">Lirik Baru</button>
-            <button id="download" class="secondary">Unduh .TXT</button>
+            ></textarea>
+            <p class="hint">
+              Baris baru dan penanda seperti [Verse], [Chorus], dan [Bridge]
+              akan dipertahankan.
+            </p>
+            <div class="buttons">
+              <button id="save">Simpan Lagu</button>
+              <button id="new" class="secondary">Lirik Baru</button>
+              <button id="download" class="secondary">Unduh .TXT</button>
+            </div>
+            <p class="status" id="status" aria-live="polite">
+              Lagu yang kamu simpan akan tersimpan di akun ini.
+            </p>
+          </section>
+
+          <section class="panel">
+            <div class="toolbar">
+              <h2>Pratinjau</h2>
+              <label for="fontSize" style="margin: 0; font-weight: 400"
+                >Ukuran</label
+              >
+              <select id="fontSize">
+                <option value="14">Kecil</option>
+                <option value="16" selected>Normal</option>
+                <option value="19">Besar</option>
+                <option value="23">Sangat besar</option>
+              </select>
+            </div>
+            <h3 class="preview-title" id="previewTitle">Judul lagu</h3>
+            <p class="preview-artist" id="previewArtist">
+              Nama penyanyi / pencipta
+            </p>
+            <div class="preview-lyrics" id="previewLyrics">
+              Lirik yang Anda tulis akan muncul di sini.
+            </div>
+          </section>
+        </div>
+
+        <section class="panel saved-panel">
+          <div class="saved-head">
+            <h2>📚 Daftar Lagu Tersimpan</h2>
+            <span class="hint" id="songCount">0 lagu</span>
           </div>
-          <p class="status" id="status" aria-live="polite">
-            Lagu tersimpan di browser ini akan muncul pada daftar di bawah.
-          </p>
-        </section>
-        <section class="panel">
-          <div class="toolbar">
-            <h2>Pratinjau</h2>
-            <label for="fontSize" style="margin: 0; font-weight: 400"
-              >Ukuran</label
-            >
-            <select id="fontSize">
-              <option value="14">Kecil</option>
-              <option value="16" selected>Normal</option>
-              <option value="19">Besar</option>
-              <option value="23">Sangat besar</option>
-            </select>
-          </div>
-          <h3 class="preview-title" id="previewTitle">Judul lagu</h3>
-          <p class="preview-artist" id="previewArtist">
-            Nama penyanyi / pencipta
-          </p>
-          <div class="preview-lyrics" id="previewLyrics">
-            Lirik yang Anda tulis akan muncul di sini.
-          </div>
+          <div id="songList" class="song-list"></div>
         </section>
       </div>
-
-      <section class="panel saved-panel">
-        <div class="saved-head">
-          <h2>📚 Daftar Lagu Tersimpan</h2>
-          <span class="hint" id="songCount">0 lagu</span>
-        </div>
-        <div id="songList" class="song-list"></div>
-      </section>
     </main>
+
     <script>
       (() => {
+        // === KONFIGURASI SUPABASE ===
+        // Ganti dua nilai ini dengan Project URL dan Publishable key kamu.
+        const SUPABASE_URL = "https://xdhqejhwwlvlwtclrrkq.supabase.co";
+        const SUPABASE_PUBLISHABLE_KEY =
+          "sb_publishable_P0EPIlTluFnVotiOQQNYaA_CnZvSj3z";
+
+        const db = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY,
+        );
+
         const $ = (id) => document.getElementById(id);
         const title = $("songTitle"),
           artist = $("artist"),
@@ -333,34 +381,18 @@
         const status = $("status"),
           songList = $("songList"),
           songCount = $("songCount");
-        const STORAGE_KEY = "penulisLirikLaguLibraryV2";
+        const authPanel = $("authPanel"),
+          appArea = $("appArea"),
+          email = $("email"),
+          password = $("password"),
+          authStatus = $("authStatus"),
+          userEmail = $("userEmail"),
+          saveBtn = $("save");
+
+        let currentUser = null;
         let currentId = null;
         let songs = [];
 
-        try {
-          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-          if (Array.isArray(parsed)) songs = parsed;
-        } catch (e) {
-          songs = [];
-        }
-
-        function updatePreview() {
-          previewTitle.textContent = title.value.trim() || "Judul lagu";
-          previewArtist.textContent =
-            artist.value.trim() || "Nama penyanyi / pencipta";
-          previewLyrics.textContent =
-            lyrics.value || "Lirik yang Anda tulis akan muncul di sini.";
-        }
-        function persist() {
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(songs));
-            return true;
-          } catch (e) {
-            status.textContent =
-              "Penyimpanan browser gagal. Coba hapus sebagian data browser atau unduh lirik sebagai TXT.";
-            return false;
-          }
-        }
         function escapeHtml(str) {
           return String(str).replace(
             /[&<>"']/g,
@@ -374,23 +406,108 @@
               })[ch],
           );
         }
+
+        function updatePreview() {
+          previewTitle.textContent = title.value.trim() || "Judul lagu";
+          previewArtist.textContent =
+            artist.value.trim() || "Nama penyanyi / pencipta";
+          previewLyrics.textContent =
+            lyrics.value || "Lirik yang Anda tulis akan muncul di sini.";
+        }
+
+        // Tes koneksi: cek di Console apakah tabel songs bisa diakses.
+        async function testConnection() {
+          const { error } = await db
+            .from("songs")
+            .select("id", { count: "exact", head: true });
+          if (error)
+            console.error("Tes koneksi Supabase GAGAL:", error.message);
+          else
+            console.log(
+              "Tes koneksi Supabase berhasil: tabel songs bisa diakses.",
+            );
+        }
+
+        // === LOGIN ===
+        async function signIn() {
+          authStatus.textContent = "Memproses...";
+          const { error } = await db.auth.signInWithPassword({
+            email: email.value.trim(),
+            password: password.value,
+          });
+          if (error) authStatus.textContent = "Gagal masuk: " + error.message;
+          else {
+            authStatus.textContent = "";
+            password.value = "";
+          }
+        }
+
+        async function signUp() {
+          authStatus.textContent = "Memproses...";
+          const { data, error } = await db.auth.signUp({
+            email: email.value.trim(),
+            password: password.value,
+          });
+          if (error) {
+            authStatus.textContent = "Gagal daftar: " + error.message;
+            return;
+          }
+          password.value = "";
+          authStatus.textContent = data.session
+            ? ""
+            : "Pendaftaran berhasil. Cek email kamu untuk konfirmasi, lalu klik Masuk.";
+        }
+
+        async function signOut() {
+          await db.auth.signOut();
+        }
+
+        // Dipanggil setiap status login berubah (termasuk saat halaman dibuka).
+        // loadSongs dijalankan lewat setTimeout agar tidak memanggil Supabase di dalam callback auth.
+        db.auth.onAuthStateChange((_event, session) => {
+          currentUser = session?.user ?? null;
+          if (currentUser) {
+            authPanel.hidden = true;
+            appArea.hidden = false;
+            userEmail.textContent = "Masuk sebagai " + currentUser.email;
+            setTimeout(loadSongs, 0);
+          } else {
+            authPanel.hidden = false;
+            appArea.hidden = true;
+            songs = [];
+            clearEditor(false);
+            renderList();
+          }
+        });
+
+        // === DATA LIRIK ===
+        async function loadSongs() {
+          const { data, error } = await db
+            .from("songs")
+            .select("*")
+            .order("updated_at", { ascending: false });
+          if (error) {
+            status.textContent = "Gagal memuat lagu: " + error.message;
+            return;
+          }
+          songs = data || [];
+          renderList();
+        }
+
         function renderList() {
-          songCount.textContent =
-            songs.length + (songs.length === 1 ? " lagu" : " lagu");
+          songCount.textContent = songs.length + " lagu";
           if (!songs.length) {
             songList.innerHTML =
               '<div class="empty">Belum ada lagu tersimpan. Tulis lirik di atas, lalu klik <b>Simpan Lagu</b>.</div>';
             return;
           }
           songList.innerHTML = songs
-            .slice()
-            .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
             .map(
               (song) => `
       <div class="song-item">
         <div class="song-info">
           <div class="song-name">${escapeHtml(song.title || "Tanpa judul")}</div>
-          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updatedAt || Date.now()).toLocaleString("id-ID")}</div>
+          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updated_at).toLocaleString("id-ID")}</div>
         </div>
         <div class="song-actions">
           <button class="small" data-action="open" data-id="${escapeHtml(song.id)}">Buka / Edit</button>
@@ -401,6 +518,7 @@
             )
             .join("");
         }
+
         function clearEditor(showMessage = true) {
           currentId = null;
           title.value = "";
@@ -410,7 +528,9 @@
           if (showMessage)
             status.textContent = "Editor kosong. Anda bisa menulis lagu baru.";
         }
-        function saveSong() {
+
+        async function saveSong() {
+          if (!currentUser) return;
           const cleanTitle = title.value.trim();
           if (!cleanTitle && !lyrics.value.trim()) {
             status.textContent =
@@ -418,32 +538,42 @@
             title.focus();
             return;
           }
-          const now = Date.now();
-          let existing = currentId
-            ? songs.find((s) => s.id === currentId)
-            : null;
-          if (!existing) {
-            existing = {
-              id: crypto.randomUUID
-                ? crypto.randomUUID()
-                : String(now) + Math.random().toString(16).slice(2),
-              createdAt: now,
-            };
-            songs.push(existing);
-            currentId = existing.id;
+
+          const payload = {
+            title: cleanTitle || "Tanpa judul",
+            artist: artist.value.trim(),
+            lyrics: lyrics.value,
+            updated_at: new Date().toISOString(),
+          };
+
+          saveBtn.disabled = true;
+          let res;
+          if (currentId) {
+            res = await db
+              .from("songs")
+              .update(payload)
+              .eq("id", currentId)
+              .select()
+              .single();
+          } else {
+            res = await db
+              .from("songs")
+              .insert({ ...payload, user_id: currentUser.id })
+              .select()
+              .single();
           }
-          existing.title = cleanTitle || "Tanpa judul";
-          existing.artist = artist.value.trim();
-          existing.lyrics = lyrics.value;
-          existing.updatedAt = now;
-          if (persist()) {
-            renderList();
-            status.textContent =
-              'Lagu "' +
-              existing.title +
-              '" berhasil disimpan. Perubahan berikutnya bisa disimpan dengan tombol yang sama.';
+          saveBtn.disabled = false;
+
+          if (res.error) {
+            status.textContent = "Gagal menyimpan: " + res.error.message;
+            return;
           }
+          currentId = res.data.id;
+          await loadSongs();
+          status.textContent =
+            'Lagu "' + res.data.title + '" berhasil disimpan ke akun kamu.';
         }
+
         function openSong(id) {
           const song = songs.find((s) => s.id === id);
           if (!song) return;
@@ -458,14 +588,32 @@
             '". Klik Simpan Lagu setelah selesai.';
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
+
+        async function deleteSong(song) {
+          if (
+            !confirm(
+              'Hapus lagu "' + (song.title || "Tanpa judul") + '" dari daftar?',
+            )
+          )
+            return;
+          const { error } = await db.from("songs").delete().eq("id", song.id);
+          if (error) {
+            status.textContent = "Gagal menghapus: " + error.message;
+            return;
+          }
+          if (currentId === song.id) clearEditor(false);
+          await loadSongs();
+          status.textContent = "Lagu telah dihapus dari daftar.";
+        }
+
         function downloadSong(song) {
           const content =
             (song.title || "Lirik Lagu") +
-            "\\n" +
-            (song.artist ? "Penyanyi/Pencipta: " + song.artist + "\\n" : "") +
-            "\\n" +
+            "\n" +
+            (song.artist ? "Penyanyi/Pencipta: " + song.artist + "\n" : "") +
+            "\n" +
             (song.lyrics || "") +
-            "\\n";
+            "\n";
           const blob = new Blob([content], {
             type: "text/plain;charset=utf-8",
           });
@@ -474,13 +622,22 @@
           a.href = url;
           a.download =
             (song.title || "lirik-lagu")
-              .replace(/[\\\\/:*?"<>|]+/g, "-")
-              .replace(/\\s+/g, "-") + ".txt";
+              .replace(/[\\/:*?"<>|]+/g, "-")
+              .replace(/\s+/g, "-") + ".txt";
           document.body.appendChild(a);
           a.click();
           a.remove();
           URL.revokeObjectURL(url);
         }
+
+        // === EVENT ===
+        $("loginBtn").addEventListener("click", signIn);
+        $("signupBtn").addEventListener("click", signUp);
+        password.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") signIn();
+        });
+        $("logoutBtn").addEventListener("click", signOut);
+
         [title, artist, lyrics].forEach((el) =>
           el.addEventListener("input", updatePreview),
         );
@@ -488,7 +645,7 @@
           "change",
           (e) => (previewLyrics.style.fontSize = e.target.value + "px"),
         );
-        $("save").addEventListener("click", saveSong);
+        saveBtn.addEventListener("click", saveSong);
         $("new").addEventListener("click", () => {
           if (
             (title.value || artist.value || lyrics.value) &&
@@ -514,24 +671,12 @@
           if (!song) return;
           if (btn.dataset.action === "open") openSong(song.id);
           if (btn.dataset.action === "download") downloadSong(song);
-          if (btn.dataset.action === "delete") {
-            if (
-              !confirm(
-                'Hapus lagu "' +
-                  (song.title || "Tanpa judul") +
-                  '" dari daftar tersimpan?',
-              )
-            )
-              return;
-            songs = songs.filter((s) => s.id !== song.id);
-            persist();
-            if (currentId === song.id) clearEditor(false);
-            renderList();
-            status.textContent = "Lagu telah dihapus dari daftar.";
-          }
+          if (btn.dataset.action === "delete") deleteSong(song);
         });
+
         updatePreview();
         renderList();
+        testConnection();
       })();
     </script>
   </body>
