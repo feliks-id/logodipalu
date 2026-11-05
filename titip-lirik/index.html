@@ -190,6 +190,9 @@
       .saved-head h2 {
         margin: 0;
       }
+      .search-box {
+        margin-top: 14px;
+      }
       .song-list {
         display: grid;
         gap: 10px;
@@ -203,6 +206,10 @@
         gap: 12px;
         align-items: center;
         justify-content: space-between;
+      }
+      .song-item.pinned {
+        border-color: var(--accent);
+        background: #f7f7ff;
       }
       .song-info {
         min-width: 0;
@@ -358,6 +365,13 @@
           <h2>📚 Daftar Lagu</h2>
           <span class="hint" id="songCount">0 lagu</span>
         </div>
+        <div class="search-box">
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="🔍 Cari judul atau kata dalam lirik..."
+          />
+        </div>
         <p class="status" id="listStatus" aria-live="polite"></p>
         <div id="songList" class="song-list"></div>
       </section>
@@ -386,7 +400,8 @@
         const status = $("status"),
           listStatus = $("listStatus"),
           songList = $("songList"),
-          songCount = $("songCount");
+          songCount = $("songCount"),
+          searchInput = $("searchInput");
         const authPanel = $("authPanel"),
           authToggle = $("authToggle"),
           userInfo = $("userInfo"),
@@ -504,11 +519,12 @@
         });
 
         // === DATA LIRIK ===
-        // Daftar lagu bisa dimuat tanpa login.
+        // Lagu yang dipasang pin tampil paling atas, lalu diurutkan dari yang terbaru diperbarui.
         async function loadSongs() {
           const { data, error } = await db
             .from("songs")
             .select("*")
+            .order("is_pinned", { ascending: false })
             .order("updated_at", { ascending: false });
           if (error) {
             listStatus.textContent = "Gagal memuat lagu: " + error.message;
@@ -518,28 +534,52 @@
           renderList();
         }
 
+        // Cocokkan kata pencarian dengan judul atau lirik (huruf besar/kecil diabaikan)
+        function matchesSearch(song, query) {
+          if (!query) return true;
+          const q = query.toLowerCase();
+          return (
+            (song.title || "").toLowerCase().includes(q) ||
+            (song.lyrics || "").toLowerCase().includes(q)
+          );
+        }
+
         function renderList() {
-          songCount.textContent = songs.length + " lagu";
+          const query = searchInput.value.trim();
+          const visible = songs.filter((s) => matchesSearch(s, query));
+
+          songCount.textContent = query
+            ? visible.length + " dari " + songs.length + " lagu"
+            : songs.length + " lagu";
+
           if (!songs.length) {
             songList.innerHTML =
               '<div class="empty">Belum ada lagu tersimpan.</div>';
             return;
           }
-          songList.innerHTML = songs
+          if (!visible.length) {
+            songList.innerHTML =
+              '<div class="empty">Tidak ada lagu yang cocok dengan pencarian.</div>';
+            return;
+          }
+
+          songList.innerHTML = visible
             .map((song) => {
               const isOwner = currentUser && song.user_id === currentUser.id;
               const id = escapeHtml(song.id);
+              const pinBadge = song.is_pinned ? " · 📌 Dipasang" : "";
               const ownerButtons = isOwner
                 ? `<button class="small" data-action="edit" data-id="${id}">Edit</button>
                    <button class="small danger" data-action="delete" data-id="${id}">Hapus</button>`
                 : "";
               return `
-      <div class="song-item">
+      <div class="song-item${song.is_pinned ? " pinned" : ""}">
         <div class="song-info">
           <div class="song-name">${escapeHtml(song.title || "Tanpa judul")}</div>
-          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updated_at).toLocaleString("id-ID")}${isOwner ? " · Milik kamu" : ""}</div>
+          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updated_at).toLocaleString("id-ID")}${isOwner ? " · Milik kamu" : ""}${pinBadge}</div>
         </div>
         <div class="song-actions">
+          <button class="small" data-action="pin" data-id="${id}">${song.is_pinned ? "Lepas pin" : "📌 Pin"}</button>
           <button class="small" data-action="view" data-id="${id}">Lihat</button>
           <button class="small secondary" data-action="download" data-id="${id}">Unduh</button>
           ${ownerButtons}
@@ -572,6 +612,7 @@
             return;
           }
 
+          // is_pinned tidak ikut dikirim, jadi status pin tetap terjaga saat lagu diedit
           const payload = {
             title: cleanTitle || "Tanpa judul",
             artist: artist.value.trim(),
@@ -605,6 +646,21 @@
           await loadSongs();
           status.textContent =
             'Lagu "' + res.data.title + '" berhasil disimpan.';
+        }
+
+        // Pin / lepas pin: boleh untuk semua pengunjung lewat fungsi toggle_pin di database
+        async function togglePin(song) {
+          const { data, error } = await db.rpc("toggle_pin", {
+            song_id: song.id,
+          });
+          if (error) {
+            listStatus.textContent = "Gagal mengubah pin: " + error.message;
+            return;
+          }
+          await loadSongs();
+          listStatus.textContent = data
+            ? "Lagu dipasang di atas."
+            : "Pin dilepas.";
         }
 
         // Lihat: siapa saja bisa membuka lirik ke pratinjau
@@ -686,6 +742,8 @@
           if (e.key === "Enter") signIn();
         });
 
+        searchInput.addEventListener("input", renderList);
+
         [title, artist, lyrics].forEach((el) =>
           el.addEventListener("input", updatePreview),
         );
@@ -720,6 +778,7 @@
           if (!song) return;
           const action = btn.dataset.action;
           if (action === "view") viewSong(song.id);
+          if (action === "pin") togglePin(song);
           if (action === "edit") editSong(song.id);
           if (action === "download") downloadSong(song);
           if (action === "delete") deleteSong(song);
