@@ -198,6 +198,17 @@
         gap: 10px;
         margin-top: 15px;
       }
+      .group-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-top: 6px;
+      }
+      .group-gap {
+        height: 22px;
+      }
       .song-item {
         border: 1px solid var(--line);
         border-radius: 11px;
@@ -390,6 +401,8 @@
           SUPABASE_PUBLISHABLE_KEY,
         );
 
+        const PIN_KEY = "penulisLirikPins";
+
         const $ = (id) => document.getElementById(id);
         const title = $("songTitle"),
           artist = $("artist"),
@@ -415,6 +428,8 @@
         let currentUser = null;
         let currentId = null;
         let songs = [];
+        // Pin pribadi per browser: { [songId]: { pinned: boolean, at: waktu dalam ms } }
+        let pinOverrides = loadOverrides();
 
         function escapeHtml(str) {
           return String(str).replace(
@@ -430,7 +445,50 @@
           );
         }
 
-        // Pratinjau yang menampilkan teks apa pun (dari editor atau dari lagu yang dipilih)
+        // === PIN PER BROWSER ===
+        function loadOverrides() {
+          try {
+            const parsed = JSON.parse(localStorage.getItem(PIN_KEY) || "{}");
+            if (!parsed || typeof parsed !== "object" || Array.isArray(parsed))
+              return {};
+            // Ubah format lama (boolean) ke format baru
+            const result = {};
+            for (const [id, value] of Object.entries(parsed)) {
+              if (typeof value === "boolean")
+                result[id] = { pinned: value, at: 0 };
+              else if (value && typeof value === "object")
+                result[id] = {
+                  pinned: !!value.pinned,
+                  at: Number(value.at) || 0,
+                };
+            }
+            return result;
+          } catch (e) {
+            return {};
+          }
+        }
+
+        function saveOverrides() {
+          try {
+            localStorage.setItem(PIN_KEY, JSON.stringify(pinOverrides));
+            return true;
+          } catch (e) {
+            listStatus.textContent =
+              "Penyimpanan browser gagal. Pin tidak bisa disimpan di browser ini.";
+            return false;
+          }
+        }
+
+        // Status pin yang berlaku di browser ini beserta waktu pemasangannya
+        function getPinState(song) {
+          const o = pinOverrides[song.id];
+          if (o) return { pinned: o.pinned, at: o.at };
+          return {
+            pinned: !!song.is_pinned,
+            at: song.pinned_at ? new Date(song.pinned_at).getTime() : 0,
+          };
+        }
+
         function setPreview(t, a, l) {
           previewTitle.textContent = t || "Judul lagu";
           previewArtist.textContent = a || "Nama penyanyi / pencipta";
@@ -438,7 +496,6 @@
             l || "Lirik yang Anda tulis akan muncul di sini.";
         }
 
-        // Pratinjau yang mengikuti isi editor (hanya dipakai saat login)
         function updatePreview() {
           setPreview(title.value.trim(), artist.value.trim(), lyrics.value);
         }
@@ -506,35 +563,39 @@
         }
 
         // Dipanggil setiap status login berubah (termasuk saat halaman dibuka).
-        // Tidak memanggil Supabase di sini agar tidak bentrok dengan proses auth.
         db.auth.onAuthStateChange((_event, session) => {
           const previousId = currentUser?.id ?? null;
           currentUser = session?.user ?? null;
           updateAuthUI();
           if (!currentUser && previousId) {
-            // Baru saja keluar: kosongkan editor agar tidak tersisa data milik akun lama
             clearEditor(false);
           }
           renderList();
         });
 
         // === DATA LIRIK ===
-        // Lagu yang dipasang pin tampil paling atas, lalu diurutkan dari yang terbaru diperbarui.
         async function loadSongs() {
-          const { data, error } = await db
-            .from("songs")
-            .select("*")
-            .order("is_pinned", { ascending: false })
-            .order("updated_at", { ascending: false });
+          const { data, error } = await db.from("songs").select("*");
           if (error) {
             listStatus.textContent = "Gagal memuat lagu: " + error.message;
             return;
           }
           songs = data || [];
+
+          // Hapus pin pribadi untuk lagu yang sudah tidak ada
+          const existingIds = new Set(songs.map((s) => s.id));
+          let changed = false;
+          for (const id of Object.keys(pinOverrides)) {
+            if (!existingIds.has(id)) {
+              delete pinOverrides[id];
+              changed = true;
+            }
+          }
+          if (changed) saveOverrides();
+
           renderList();
         }
 
-        // Cocokkan kata pencarian dengan judul atau lirik (huruf besar/kecil diabaikan)
         function matchesSearch(song, query) {
           if (!query) return true;
           const q = query.toLowerCase();
@@ -544,9 +605,62 @@
           );
         }
 
+        // Urutan: lagu yang dipasang di atas (yang pertama dipasang paling atas),
+        // lalu sisanya berurut abjad berdasarkan judul.
+        function sortSongs(list) {
+          return list
+            .map((song) => ({ song, state: getPinState(song) }))
+            .sort((a, b) => {
+              if (a.state.pinned !== b.state.pinned)
+                return a.state.pinned ? -1 : 1;
+              if (a.state.pinned) return a.state.at - b.state.at;
+              return (a.song.title || "").localeCompare(
+                b.song.title || "",
+                "id",
+                {
+                  sensitivity: "base",
+                },
+              );
+            })
+            .map((x) => x.song);
+        }
+
+        function renderItem(song) {
+          const isOwner = currentUser && song.user_id === currentUser.id;
+          const id = escapeHtml(song.id);
+          const state = getPinState(song);
+
+          const pinBadge = state.pinned ? " · 📌 Dipasang" : "";
+          const localPinButton = `<button class="small" data-action="pin-local" data-id="${id}">${state.pinned ? "Lepas pin" : "📌 Pin"}</button>`;
+          const defaultButton = isOwner
+            ? `<button class="small secondary" data-action="pin-default" data-id="${id}">${song.is_pinned ? "Lepas default" : "Jadikan default"}</button>`
+            : "";
+          const ownerButtons = isOwner
+            ? `<button class="small" data-action="edit" data-id="${id}">Edit</button>
+               <button class="small danger" data-action="delete" data-id="${id}">Hapus</button>`
+            : "";
+
+          return `
+      <div class="song-item${state.pinned ? " pinned" : ""}">
+        <div class="song-info">
+          <div class="song-name">${escapeHtml(song.title || "Tanpa judul")}</div>
+          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updated_at).toLocaleString("id-ID")}${isOwner ? " · Milik kamu" : ""}${song.is_pinned ? " · Default" : ""}${pinBadge}</div>
+        </div>
+        <div class="song-actions">
+          ${localPinButton}
+          <button class="small" data-action="view" data-id="${id}">Lihat</button>
+          <button class="small secondary" data-action="download" data-id="${id}">Unduh</button>
+          ${defaultButton}
+          ${ownerButtons}
+        </div>
+      </div>`;
+        }
+
         function renderList() {
           const query = searchInput.value.trim();
-          const visible = songs.filter((s) => matchesSearch(s, query));
+          const visible = sortSongs(songs).filter((s) =>
+            matchesSearch(s, query),
+          );
 
           songCount.textContent = query
             ? visible.length + " dari " + songs.length + " lagu"
@@ -563,30 +677,27 @@
             return;
           }
 
-          songList.innerHTML = visible
-            .map((song) => {
-              const isOwner = currentUser && song.user_id === currentUser.id;
-              const id = escapeHtml(song.id);
-              const pinBadge = song.is_pinned ? " · 📌 Dipasang" : "";
-              const ownerButtons = isOwner
-                ? `<button class="small" data-action="edit" data-id="${id}">Edit</button>
-                   <button class="small danger" data-action="delete" data-id="${id}">Hapus</button>`
-                : "";
-              return `
-      <div class="song-item${song.is_pinned ? " pinned" : ""}">
-        <div class="song-info">
-          <div class="song-name">${escapeHtml(song.title || "Tanpa judul")}</div>
-          <div class="song-meta">${escapeHtml(song.artist || "Penyanyi tidak diisi")} · Diperbarui ${new Date(song.updated_at).toLocaleString("id-ID")}${isOwner ? " · Milik kamu" : ""}${pinBadge}</div>
-        </div>
-        <div class="song-actions">
-          <button class="small" data-action="pin" data-id="${id}">${song.is_pinned ? "Lepas pin" : "📌 Pin"}</button>
-          <button class="small" data-action="view" data-id="${id}">Lihat</button>
-          <button class="small secondary" data-action="download" data-id="${id}">Unduh</button>
-          ${ownerButtons}
-        </div>
-      </div>`;
-            })
-            .join("");
+          // Pisahkan lagu yang dipasang dan yang tidak, lalu beri jarak di antaranya
+          const pinned = visible.filter((s) => getPinState(s).pinned);
+          const others = visible.filter((s) => !getPinState(s).pinned);
+
+          let html = "";
+          if (pinned.length) {
+            html +=
+              '<div class="group-label">📌 Dipasang (urutan pemasangan)</div>';
+            html += pinned.map(renderItem).join("");
+          }
+          if (pinned.length && others.length) {
+            html += '<div class="group-gap"></div>';
+          }
+          if (others.length) {
+            if (pinned.length) {
+              html += '<div class="group-label">Lagu lainnya (A–Z)</div>';
+            }
+            html += others.map(renderItem).join("");
+          }
+
+          songList.innerHTML = html;
         }
 
         function clearEditor(showMessage = true) {
@@ -612,7 +723,7 @@
             return;
           }
 
-          // is_pinned tidak ikut dikirim, jadi status pin tetap terjaga saat lagu diedit
+          // is_pinned dan pinned_at tidak ikut dikirim, jadi pin default tetap terjaga saat lagu diedit
           const payload = {
             title: cleanTitle || "Tanpa judul",
             artist: artist.value.trim(),
@@ -648,22 +759,40 @@
             'Lagu "' + res.data.title + '" berhasil disimpan.';
         }
 
-        // Pin / lepas pin: boleh untuk semua pengunjung lewat fungsi toggle_pin di database
-        async function togglePin(song) {
-          const { data, error } = await db.rpc("toggle_pin", {
-            song_id: song.id,
-          });
+        // Pin pribadi: hanya berlaku di browser ini
+        function togglePinLocal(song) {
+          const current = getPinState(song);
+          const next = !current.pinned;
+          pinOverrides[song.id] = { pinned: next, at: Date.now() };
+          if (!saveOverrides()) return;
+          renderList();
+          listStatus.textContent = next
+            ? "Lagu dipasang di browser ini."
+            : "Pin dilepas di browser ini.";
+        }
+
+        // Pin default: hanya pemilik lagu, berlaku untuk pengunjung yang belum punya pin pribadi
+        async function togglePinDefault(song) {
+          if (!currentUser || song.user_id !== currentUser.id) return;
+          const next = !song.is_pinned;
+          const { error } = await db
+            .from("songs")
+            .update({
+              is_pinned: next,
+              pinned_at: next ? new Date().toISOString() : null,
+            })
+            .eq("id", song.id);
           if (error) {
-            listStatus.textContent = "Gagal mengubah pin: " + error.message;
+            listStatus.textContent =
+              "Gagal mengubah pin default: " + error.message;
             return;
           }
           await loadSongs();
-          listStatus.textContent = data
-            ? "Lagu dipasang di atas."
-            : "Pin dilepas.";
+          listStatus.textContent = next
+            ? "Lagu dijadikan pin default untuk semua pengunjung."
+            : "Pin default dilepas.";
         }
 
-        // Lihat: siapa saja bisa membuka lirik ke pratinjau
         function viewSong(id) {
           const song = songs.find((s) => s.id === id);
           if (!song) return;
@@ -676,7 +805,6 @@
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        // Edit: hanya untuk pemilik lagu yang sedang login
         function editSong(id) {
           if (!currentUser) return;
           const song = songs.find((s) => s.id === id);
@@ -706,6 +834,8 @@
             listStatus.textContent = "Gagal menghapus: " + error.message;
             return;
           }
+          delete pinOverrides[song.id];
+          saveOverrides();
           if (currentId === song.id) clearEditor(false);
           await loadSongs();
           listStatus.textContent = "Lagu telah dihapus dari daftar.";
@@ -778,7 +908,8 @@
           if (!song) return;
           const action = btn.dataset.action;
           if (action === "view") viewSong(song.id);
-          if (action === "pin") togglePin(song);
+          if (action === "pin-local") togglePinLocal(song);
+          if (action === "pin-default") togglePinDefault(song);
           if (action === "edit") editSong(song.id);
           if (action === "download") downloadSong(song);
           if (action === "delete") deleteSong(song);
